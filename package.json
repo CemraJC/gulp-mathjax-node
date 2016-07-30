@@ -1,0 +1,23 @@
+{
+  "name": "gulp-mathjax-node",
+  "version": "0.1.0",
+  "description": "A simple wrapper around mathjax-node",
+  "main": "index.js",
+  "dependencies" : {
+  },
+  "devDependencies" : {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gulpfriendly",
+    "gulpplugin",
+    "equation",
+    "mathjax",
+    "plugin",
+    "math",
+    "gulp"
+  ],
+  "author": "cemrajc",
+  "license": "MIT"
+}
