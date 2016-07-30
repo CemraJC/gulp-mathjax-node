@@ -18,6 +18,9 @@
     "math",
     "gulp"
   ],
-  "author": "cemrajc",
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "author": "Jason Cemra",
   "license": "MIT"
 }
