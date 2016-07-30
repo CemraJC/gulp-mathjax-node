@@ -2,6 +2,7 @@
   "name": "gulp-mathjax-node",
   "version": "0.1.0",
   "description": "A simple wrapper around mathjax-node",
+  "repository": "git://github.com/cemrajc/gulp-mathjax-node.git",
   "main": "index.js",
   "dependencies" : {
   },
