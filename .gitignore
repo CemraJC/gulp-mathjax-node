@@ -1,3 +1,4 @@
+__dev/
 node_modules/
 *.ffs_*
 *.sh
