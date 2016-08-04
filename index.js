@@ -1,7 +1,8 @@
 var math = require('mathjax-node/lib/mj-page.js'),
     fs = require('fs'),
-    through = require('through2'),
+    _ = require('lodash'),
     gutil = require('gulp-util'),
+    through = require('through2'),
     PluginError = gutil.pluginError;
 
 const PLUGIN_NAME = "gulp-mathjax-node";
@@ -39,7 +40,7 @@ function indexAndLength(string, regex) {
 
     var match = string.match(regex);
     if (match === null || match[0] === undefined) {
-        throw(new Error("HTML Error - unable to find", regex));
+        throw(new PluginError(PLUGIN_NAME, "HTML Error - unable to find" + regex));
         return false;
     } else {
         match = match[0];
@@ -51,31 +52,54 @@ function indexAndLength(string, regex) {
     return result;
 }
 
-function renderHTML() {
+function renderHTML(_options) {
+    var error_html = "<h1 style='width: 100%;text-align:center;font-family:Arial,sans-serif;'>If you're seeing this, a major error has occurred. Please file an issue at the <a style='color:#67B1E5;' href='https://github.com/cemrajc/gulp-mathjax-node/issues'><b>gulp-mathjax-node</b></a> Github page!</h1>";
+
+    /*
+    *
+    *   These options were stolen (and slightly modified) from the MathJax node module itself :)
+    *   NOTE: [Not Supported] options will still be passed, but are not officially tested by this plugin.
+    *         [Supported] options should work as intended. See the README for more.
+    *
+    */
+    var options = _.defaults(_options, {
+        ex: 6,                          // ex-size in pixels [Not Supported]
+        width: 1,                       // width of container (in ex) for linebreaking and tags [Not Supported]
+        useFontCache: true,             // use <defs> and <use> in svg output? [Not Supported]
+        useGlobalCache: true,           // use common <defs> for all equations? [Not Supported]
+        linebreaks: false,              // do linebreaking? [Supported]
+        equationNumbers: "none",        // or "AMS" or "all" [Supported]
+        singleDollars: true,            // allow single-dollar delimiter for inline TeX? [Supported]
+
+        html: error_html,               // the HTML snippet to process, which will be overwritten in this
+                                        // object by the contents of the file itself,
+                                        // so it has an error message in a string.
+
+        xmlns: "mml",                   // the namespace to use for MathML [Not Supported]
+        inputs: ["AsciiMath","TeX","MathML"],  // the inputs formats to support [Not Supported]
+        renderer: "SVG",                // the output format [Supported]
+                                        //    ("SVG", "NativeMML", "IMG", or "None")
+        dpi: 144,                       // dpi for png image [Not Supported - Requires Balik or somthing]
+
+        addPreview: false,              // turn turn into a MathJax preview, and keep the jax [Supported]
+        removeJax: true,                // remove MathJax <script> tags? [Supported]
+
+        speakText: false,               // add spoken annotations to svg output? [Not Supported]
+        speakRuleset: "mathspeak",      // set speech ruleset (default (chromevox rules), mathspeak) [Not Supported]
+        speakStyle: "default",          // set speech style (mathspeak:  default, brief, sbrief) [Not Supported]
+
+        timeout: 60 * 1000,             // 60 second timeout before restarting MathJax [Not Supported]
+    }
+
     var stream = through.obj(function(file, enc, cb){
         if (file.isBuffer()) {
             var doc = splitHeadBodyTail(file.contents.toString());
-            math.typeset({
-                html: doc.body,
-                format: "TeX",
-                renderer: "SVG",
-                width: 1,
-                // inputs: argv.format,
-                // equationNumbers: argv.eqno,
-                // singleDollars: !argv.nodollars,
-                // useFontCache: !argv.nofontcache,
-                // useGlobalCache: !argv.localcache,
-                // addPreview: argv.preview,
-                // speakText: argv.speech,
-                // speakRuleset: argv.speechrules.replace(/^chromevox$/i,"default"),
-                // speakStyle: argv.speechstyle,
-                // ex: argv.ex, width: argv.width,
-                // linebreaks: argv.linebreaks
-            }, (result) => {
+            options.html = doc.body;
+            math.typeset(options, (result) => {
                 if (!result.errors) {
                     file.contents = new Buffer(doc.head + result.html + doc.tail);
                 } else {
-                    throw(new Error(PLUGIN_NAME + ": " + result.errors.toString() + " in file \"" + file.path + "\""));
+                    throw(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
                 }
                 this.push(file);
                 cb();
@@ -99,4 +123,4 @@ function renderHTMLLogErrors(){
 }
 
 
-module.exports = renderHTMLLogErrors;
+module.exports = renderHTML;
