@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Options Default</title>
+</head>
+<body>
+
+<!-- This is a generic file that simply aims to confirm that all the defaults work as expected -->
+
+<!-- Testing the general rendering -->
+<script type="math/tex">e^{i\tau}=1</script>
+$e^{i\pi}=-1$
+
+<script type="math/tex; mode=display">\int_0^6 \frac{5x}{3} dx</script>
+$$
+    \int_0^6 \frac{5ex}{3} dex
+$$
+
+<!-- Testing the in-HTML rendering -->
+<div class="wrapper">
+    <article>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, eius!</p>
+        <p>Vel quae repellendus maiores quod adipisci, dolores voluptatem consequatur velit. $e^{i\pi}=-1$</p>
+        <script type="math/tex; mode=display">\int_0^6 \frac{5x}{3} dx</script>
+        <p>Eaque architecto cupiditate omnis laborum nobis similique, quas animi corporis?</p>
+        <p>Sapiente unde sunt, veritatis reiciendis molestias eius impedit dolore accusantium? <script type="math/tex">e^{i\tau}=1</script></p>
+
+        $$
+            \int_0^6 \frac{5ex}{3} dex
+        $$
+
+    </article>
+</div>
+
+</body>
+</html>
