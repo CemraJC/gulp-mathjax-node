@@ -74,43 +74,83 @@ var fixtures = {
     invalid_tex:  "invalid-tex.html"
 }
 
-describe("Renderers:", function() {
-    describe("SVG", function() {
-        it('should render the proper inline SVG', function(callback) {
-            testImplementation(fixtures.svg_inline, { renderer: "SVG" }, callback);
+describe("Renderers:", function () {
+    describe("SVG", function () {
+        it('should render the proper inline SVG', function (done) {
+            testImplementation(fixtures.svg_inline, { renderer: "SVG" }, done);
         })
-        it('should render the proper display SVG', function(callback) {
-            testImplementation(fixtures.svg_display, { renderer: "SVG" }, callback);
+        it('should render the proper display SVG', function (done) {
+            testImplementation(fixtures.svg_display, { renderer: "SVG" }, done);
         })
     })
-    describe("MathML (NativeMML)", function() {
-        it('should render the proper inline MML', function(callback) {
-            testImplementation(fixtures.mathml_inline, { renderer: "NativeMML" }, callback);
+    describe("MathML (NativeMML)", function () {
+        it('should render the proper inline MML', function (done) {
+            testImplementation(fixtures.mathml_inline, { renderer: "NativeMML" }, done);
         })
-        it('should render the proper display MML', function(callback) {
-            testImplementation(fixtures.mathml_display, { renderer: "NativeMML" }, callback);
+        it('should render the proper display MML', function (done) {
+            testImplementation(fixtures.mathml_display, { renderer: "NativeMML" }, done);
         })
     })
 })
 
+describe("Testing Options:", function () {
+    describe("linebreaks", function () {
+        // Does not insert linebreaks by default
+        it("should insert linebreaks", function (done) {
 
-describe("Failures for Gulp Implementation Code:", function() {
-    describe("Invalid options object", function() {
-        it('should just use what options it can make sense of', function(callback) {
+        })
+    })
+
+    // It does no numbering by default
+    describe("equationNumbers", function () {
+        it("should give 'AMS' numbering", function (done) {
+
+        })
+        it("should number 'all' equations", function (done) {
+
+        })
+    })
+
+    describe("singleDollars", function () {
+        // It will parse by default
+        it("should not parse the single-dollar delimiter for inline TeX", function (done) {
+
+        })
+    })
+
+    describe("removeJax", function () {
+        // It removes by default
+        it("should keep MathJax <script> tags", function (done) {
+
+        })
+    })
+
+    describe("addPreview", function () {
+        // Doesn't do this by default
+        it("should turn into a MathJax preview, and keep the TeX", function (done) {
+
+        })
+    })
+
+})
+
+describe("Failures for Gulp Implementation Code:", function () {
+    describe("Invalid options object", function () {
+        it('should just use what options it can make sense of', function (done) {
             // TODO: Make it emit a non-blocking warning about the "unknown" properties.
             testImplementation(fixtures.default_options, {
                 cream: "corn",
                 human: "resources",
                 isValid: false
-            }, callback);
+            }, done);
         })
     })
-    describe("Invalid options type", function() {
-        it('should throw an error', function(callback) {
+    describe("Invalid options type", function () {
+        it('should throw an error', function (done) {
             try {
-                testImplementation(fixtures.default_options, "An 'options' string.", callback);
+                testImplementation(fixtures.default_options, "An 'options' string.", done);
             } catch(e) {
-                callback();
+                done();
                 return true;
             }
             throw new Error("Should thow an error about types, but it didn't");
@@ -119,49 +159,49 @@ describe("Failures for Gulp Implementation Code:", function() {
 })
 
 
-describe("Graceful Failures for Input File:", function() {
-    describe("No body tag", function() {
-        it('should render the proper SVG as normal', function(callback) {
-            testImplementation(fixtures.no_body.svg, { renderer: "SVG" }, callback);
+describe("Graceful Failures for Input File:", function () {
+    describe("No body tag", function () {
+        it('should render the proper SVG as normal', function (done) {
+            testImplementation(fixtures.no_body.svg, { renderer: "SVG" }, done);
         })
-        it('should render the proper MathML as normal', function(callback) {
-            testImplementation(fixtures.no_body.mathml, { renderer: "NativeMML" }, callback);
-        })
-    })
-    describe("No head tag", function() {
-        it('should render the proper SVG as normal', function(callback) {
-            testImplementation(fixtures.no_head.svg, { renderer: "SVG" }, callback);
-        })
-        it('should render the proper MathML as normal', function(callback) {
-            testImplementation(fixtures.no_head.mathml, { renderer: "NativeMML" }, callback);
+        it('should render the proper MathML as normal', function (done) {
+            testImplementation(fixtures.no_body.mathml, { renderer: "NativeMML" }, done);
         })
     })
-    describe("No structuring HTML at all", function() {
-        it('should render the proper SVG as normal', function(callback) {
-            testImplementation(fixtures.no_html.svg, { renderer: "SVG" }, callback);
+    describe("No head tag", function () {
+        it('should render the proper SVG as normal', function (done) {
+            testImplementation(fixtures.no_head.svg, { renderer: "SVG" }, done);
         })
-        it('should render the proper MathML as normal', function(callback) {
-            testImplementation(fixtures.no_html.mathml, { renderer: "NativeMML" }, callback);
-        })
-    })
-    describe("Invalid TeX", function() {
-        it('should emit an error and move on with no extra output', function(callback) {
-            testImplementation(fixtures.invalid_tex, { renderer: "SVG" }, callback);
+        it('should render the proper MathML as normal', function (done) {
+            testImplementation(fixtures.no_head.mathml, { renderer: "NativeMML" }, done);
         })
     })
-    describe("Only standard HTML (no math)", function() {
-        it('should not touch the file', function(callback) {
-            testImplementation(fixtures.no_math, { renderer: "SVG" }, callback);
+    describe("No structuring HTML at all", function () {
+        it('should render the proper SVG as normal', function (done) {
+            testImplementation(fixtures.no_html.svg, { renderer: "SVG" }, done);
+        })
+        it('should render the proper MathML as normal', function (done) {
+            testImplementation(fixtures.no_html.mathml, { renderer: "NativeMML" }, done);
         })
     })
-    describe("Nothing at all (no math)", function() {
-        it('should not touch the file', function(callback) {
-            testImplementation(fixtures.no_anything, { renderer: "SVG" }, callback);
+    describe("Invalid TeX", function () {
+        it('should emit an error and move on with no extra output', function (done) {
+            testImplementation(fixtures.invalid_tex, { renderer: "SVG" }, done);
+        })
+    })
+    describe("Only standard HTML (no math)", function () {
+        it('should not touch the file', function (done) {
+            testImplementation(fixtures.no_math, { renderer: "SVG" }, done);
+        })
+    })
+    describe("Nothing at all (no math)", function () {
+        it('should not touch the file', function (done) {
+            testImplementation(fixtures.no_anything, { renderer: "SVG" }, done);
         })
     })
 })
 
-after(function() {
+after(function () {
     try {
         flatDelete("temp/");
     } catch(e) {
