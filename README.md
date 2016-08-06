@@ -22,15 +22,17 @@ The output (in a browser) would *look* like this:
 
 ----
 
+This is an HTML file!
+
 G'day mate! Here's a math expression:
 
-![Equation SVG Demo](images/demo.svg)
+![Display Equation SVG Demo](images/demo_display.svg)
 
-This is an HTML file!
+Try a gool 'ol inline expression: ![Inline Equation SVG Demo](images/demo_inline.svg)
 
 ----
 
-Note however, that the SVG definition is actually inline with the HTML.
+Note however, that the SVG definition is actually inline with the HTML (and the inline equation wouldn't be cut off).
 
 
 <!-- [![NPM](https://nodei.co/npm/gulp-mathjax-node.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gulp-mathjax-node/)
@@ -55,7 +57,7 @@ gulp.src("**/*.{md, markdown}")
   .pipe(gulp.dest("dest/"));
 
 // Inline-render equations in every html file, then minify and output to "_site/"
-// WARNING! This will overwrite the htmlfiles where they stand.
+// WARNING! This will overwrite the html files where they stand.
 gulp.src("_site/**/*.html")
   .pipe(math())
   .pipe(htmlmin())
@@ -103,7 +105,7 @@ Default: `none`
 
 Accepted Values:
 
-* `AMS`
+* `AMS` - Any display equations written inside the `\begin{equation} ... \end{equation}` environment will be numbered.
 * `all`
 * `none`
 
@@ -119,22 +121,22 @@ If `true`, allow inline TeX expressions to be written as `$ ... $`
 Type: Boolean <br>
 Default: `true`
 
-If `true`, remove the TeX expression from the markup after replacing it.
+If `true`, remove the TeX expression from the markup after replacing them.
 
 #### addPreview
 
 Type: Boolean <br>
 Default: `false`
 
-If `true`, [things]
+If `true`, add a MathJaX preview clause that still allows a dynamic MathJax script to render the JaX *and* all the other lovely things (like context menus) when the user has finished downloading a webpage. If you still want to use a dynamic MathJaX script, this is a great way to boost the perceived performance.
 
 
-#### linebreaks
+<!-- #### linebreaks
 
 Type: Boolean <br>
 Default: `false`
 
-If `true`, [things]
+If `true`, we don't actually know what this does -->
 
 
 
