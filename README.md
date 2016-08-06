@@ -64,7 +64,7 @@ gulp.src("_site/**/*.html")
   .pipe(gulp.dest("_site/"));
 ```
 
-gulp-mathjax-node also accepts custom options, which are passed directly into mathjax-node.
+gulp-mathjax-node also accepts custom options, which are passed directly into [mathjax-node]().
 
 ```javascript
 var math = require("gulp-mathjax-node"),
@@ -93,10 +93,10 @@ Default: `SVG`
 
 Accepted Values:
 
-* `SVG`
-* `NativeMML`
-* `IMG`
-* `None`
+* `SVG` - Render equations as an SVG image (as demonstrated above)
+* `NativeMML` - Render equations into Math Markup Language
+<!-- * `IMG` -->
+<!-- * `None` -->
 
 #### equationNumbers
 
@@ -105,8 +105,8 @@ Default: `none`
 
 Accepted Values:
 
-* `AMS` - Any display equations written inside the `\begin{equation} ... \end{equation}` environment will be numbered.
-* `all`
+* `AMS` - Any display equations written inside a `\begin{equation} ... \end{equation}` block will be numbered.
+* `all` - Every display equation will be numbered, starting from 1.
 * `none`
 
 #### singleDollars
@@ -128,7 +128,7 @@ If `true`, remove the TeX expression from the markup after replacing them.
 Type: Boolean <br>
 Default: `false`
 
-If `true`, add a MathJaX preview clause that still allows a dynamic MathJax script to render the JaX *and* all the other lovely things (like context menus) when the user has finished downloading a webpage. If you still want to use a dynamic MathJaX script, this is a great way to boost the perceived performance.
+If `true`, add a MathJaX preview clause and keep the TeX. If you still want to use a dynamic MathJaX script, this is a great way to boost the perceived performance.
 
 
 <!-- #### linebreaks
@@ -142,7 +142,7 @@ If `true`, we don't actually know what this does -->
 
 ### Note about option support
 
-There are other options you can pass in, but you will need to refer to the [mathjax-node docs]() to find out what they are. Be warned, they may not work as you intend.
+There are other options you can pass in, but you will need to refer to the [mathjax-node docs]() to find out what they are. Be warned, if they aren't mentioned above, they may not work as you intend.
 
 gulp-mathjax-node only supports a few of the options that the underlying [mathjax-node]() module can actually handle. Mostly, this is of little consequence (let us know if we've made an oversight), but the most notable exclusion is PNG-rendering support. This PNG renderer is not supported, because mathjax-node does not actually include the capability for PNG rendering - it requires a separate manually-installed library. In my opinion, the SVG renderer is better anyway, because resulting equations look crisp at any dpi. The basic SVGs that mathjax-node produces are also [highly supported](caniuse).
 

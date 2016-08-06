@@ -89,6 +89,11 @@ describe("Renderers:", function () {
             testImplementation(fixtures.mathml_display, { renderer: "NativeMML" }, done);
         })
     })
+    describe("None", function () {
+        it('should do nothing', function (done) {
+            testImplementation(fixtures.no_anything, { renderer: "None" }, done);
+        })
+    })
 })
 
 describe("Testing Options:", function () {
