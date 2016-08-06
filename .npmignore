@@ -3,3 +3,6 @@ test/temp/
 node_modules/
 *.ffs_*
 *.sh
+
+.gitignore
+.travis.yml
