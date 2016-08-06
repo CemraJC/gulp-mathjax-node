@@ -5,6 +5,9 @@ var math = require('mathjax-node/lib/mj-page.js'),
     through = require('through2'),
     PluginError = gutil.PluginError;
 
+math.config({
+    displayErrors: false
+})
 const PLUGIN_NAME = "gulp-mathjax-node";
 
 
@@ -19,14 +22,19 @@ CHECK IF THEY ACTUALLY HAVE TEX!!!
     Specialised funciton to split HTML into it's head, body and tail components
  */
 function splitHeadBodyTail(html) {
-    var bodyStats = indexAndLength(html, new RegExp("<body[^>]*>", "i")),
-        tailStats = indexAndLength(html, new RegExp("<\/body[^>]*>", "i"));
-
     var result = { head: "", body: "", tail: "" };
 
-    result.head = html.slice(0, bodyStats.index + bodyStats.length);
-    result.body = html.slice(bodyStats.index + bodyStats.length, tailStats.index);
-    result.tail = html.slice(tailStats.index);
+    try {
+        var bodyStats = indexAndLength(html, new RegExp("<body[^>]*>", "i")),
+            tailStats = indexAndLength(html, new RegExp("<\/body[^>]*>", "i"));
+
+        result.head = html.slice(0, bodyStats.index + bodyStats.length);
+        result.body = html.slice(bodyStats.index + bodyStats.length, tailStats.index);
+        result.tail = html.slice(tailStats.index);
+    } catch(e) {
+        // If we can't find a body tag, we can assume that there isn't one.
+        result.body = html;
+    }
 
     return result;
 }
@@ -95,9 +103,18 @@ function parseOptions(_options) {
         timeout: 60 * 1000,             // 60 second timeout before restarting MathJax [Not Supported]
     };
 
-    var options = _.defaults(_.pick(_options, defaults), defaults);
-
+    var options = _.pick(_.defaults(_options, defaults), Object.keys(defaults));
     return options;
+}
+
+function checkForTex(html) {
+    var searches = [/\${1,2}[^$]*\${1,2}/, 'script type="math/tex"'];
+    for (var i in searches) {
+        if (html.match(searches[i]) !== null) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function renderHTML(_options) {
@@ -107,18 +124,22 @@ function renderHTML(_options) {
     var stream = through.obj(function(file, enc, cb){
         if (file.isBuffer()) {
             var doc = splitHeadBodyTail(file.contents.toString());
-            options.html = doc.body;
-            math.start();
+            if(checkForTex(doc.body)) {
+                options.html = doc.body;
 
-            math.typeset(options, (result) => {
-                if (!result.errors) {
-                    file.contents = new Buffer(doc.head + result.html + doc.tail);
-                } else {
-                    throw(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
-                }
+                math.typeset(options, (result) => {
+                    if (!result.errors) {
+                        file.contents = new Buffer(doc.head + result.html + doc.tail);
+                    } else {
+                        this.emit(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
+                    }
+                    this.push(file);
+                    cb();
+                });
+            } else {
                 this.push(file);
                 cb();
-            });
+            }
         } else {
             this.push(file);
             cb();
