@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A simple wrapper around mathjax-node",
   "repository": "git://github.com/cemrajc/gulp-mathjax-node.git",
+  "bugs": "git://github.com/cemrajc/gulp-mathjax-node/issues",
   "main": "index.js",
   "dependencies": {
     "gulp-util": "^3.0.7",
