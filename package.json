@@ -30,6 +30,6 @@
   "engines": {
     "node": ">= 0.10"
   },
-  "author": "Jason Cemra",
+  "author": "Jason Cemra <cemrajc+gulpmathjaxnode@gmail.com> (http://cemrajc.cf)",
   "license": "MIT"
 }
