@@ -16,7 +16,7 @@
     "mocha": "^3.0.0"
   },
   "scripts": {
-    "test": "bash -c 'cd ./test/; ../node_modules/.bin/mocha -c -R spec ./main.js'"
+    "test": "bash -c 'cd ./test/; ../node_modules/.bin/mocha -c ./main.js'"
   },
   "keywords": [
     "gulpfriendly",

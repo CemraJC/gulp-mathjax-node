@@ -7,7 +7,7 @@ var math = require('mathjax-node/lib/mj-page.js'),
 
 math.config({
     displayErrors: false
-})
+});
 const PLUGIN_NAME = "gulp-mathjax-node";
 
 
@@ -124,8 +124,9 @@ function renderHTML(_options) {
     var stream = through.obj(function(file, enc, cb){
         if (file.isBuffer()) {
             var doc = splitHeadBodyTail(file.contents.toString());
-            if(checkForTex(doc.body)) {
+            if (checkForTex(doc.body)) {
                 options.html = doc.body;
+                math.start();
 
                 math.typeset(options, (result) => {
                     if (!result.errors) {

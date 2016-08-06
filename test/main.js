@@ -4,18 +4,10 @@ var math   = require("../index.js"),
     expect = require("chai").expect;
 
 
-/*
-
-    TODO:
-    Add checks to make sure each of the options are working
-
- */
-
-
-function checkEqual(path1, path2) {
+function checkFilesEqual(path1, path2) {
     try {
-        file1 = fs.readFileSync(path1, {encoding: "utf-8"});
-        file2 = fs.readFileSync(path2, {encoding: "utf-8"});
+        var file1 = fs.readFileSync(path1, {encoding: "utf-8"});
+        var file2 = fs.readFileSync(path2, {encoding: "utf-8"});
         return (file1 === file2);
     } catch(e) {
         console.log("> Could not compare files: ", e.code, e.path);
@@ -42,7 +34,7 @@ function testImplementation(fixture, options, cb) {
         .pipe(math(options))
         .pipe(gulp.dest(file_paths.tmp))
         .on('end', function() {
-            expect(checkEqual(file_paths.exp + fixture, file_paths.tmp + fixture)).to.equal(true);
+            expect(checkFilesEqual(file_paths.exp + fixture, file_paths.tmp + fixture)).to.equal(true);
             cb();
         })
 }
@@ -71,7 +63,13 @@ var fixtures = {
     no_math: "no-math-svg.html",
     no_anything: "no-anything-svg.html",
 
-    invalid_tex:  "invalid-tex.html"
+    linebreaks:  "linebreaks.html",
+    remove_jax:  "remove-jax.html",
+    add_preview:  "add-preview.html",
+    invalid_tex:  "invalid-tex.html",
+    ams_numbering:  "ams-numbering.html",
+    all_numbering:  "all-numbering.html",
+    no_single_dollars:  "no-single-dollars.html"
 }
 
 describe("Renderers:", function () {
@@ -94,41 +92,41 @@ describe("Renderers:", function () {
 })
 
 describe("Testing Options:", function () {
-    describe("linebreaks", function () {
-        // Does not insert linebreaks by default
-        it("should insert linebreaks", function (done) {
-
-        })
-    })
+    // describe("linebreaks", function () {
+    //     // Does not insert linebreaks by default
+    //     it("should insert linebreaks", function (done) {
+    //         testImplementation(fixtures.linebreaks, { renderer: "SVG", linebreaks: true }, done);
+    //     })
+    // })
 
     // It does no numbering by default
     describe("equationNumbers", function () {
-        it("should give 'AMS' numbering", function (done) {
-
+        it("should give 'AMS' numbering, starting from 1", function (done) {
+            testImplementation(fixtures.ams_numbering, { renderer: "SVG", equationNumbers: "AMS" }, done);
         })
-        it("should number 'all' equations", function (done) {
-
+        it("should number 'all' equations, starting from 1", function (done) {
+            testImplementation(fixtures.all_numbering, { renderer: "SVG", equationNumbers: "all" }, done);
         })
     })
 
     describe("singleDollars", function () {
         // It will parse by default
         it("should not parse the single-dollar delimiter for inline TeX", function (done) {
-
+            testImplementation(fixtures.no_single_dollars, { renderer: "SVG", singleDollars: false }, done);
         })
     })
 
     describe("removeJax", function () {
         // It removes by default
         it("should keep MathJax <script> tags", function (done) {
-
+            testImplementation(fixtures.remove_jax, { renderer: "SVG", removeJax: false }, done);
         })
     })
 
     describe("addPreview", function () {
         // Doesn't do this by default
         it("should turn into a MathJax preview, and keep the TeX", function (done) {
-
+            testImplementation(fixtures.add_preview, { renderer: "SVG", addPreview: true }, done);
         })
     })
 
