@@ -39,12 +39,25 @@ function testImplementation(fixture, options, cb) {
         })
 }
 
-var fixtures = {
-    svg_inline: "renderer-svg-inline.html",
-    svg_display: "renderer-svg-display.html",
 
-    mathml_inline: "renderer-mathml-inline.html",
-    mathml_display: "renderer-mathml-display.html",
+before(function () {
+    try {
+        flatDelete("temp/");
+    } catch(e) {
+        console.log(e);
+    }
+})
+
+
+var fixtures = {
+    renderer_svg_inline: "renderer-svg-inline.html",
+    renderer_svg_display: "renderer-svg-display.html",
+
+    renderer_mathml_inline: "renderer-mathml-inline.html",
+    renderer_mathml_display: "renderer-mathml-display.html",
+
+    renderer_none: "renderer-none.html",
+    renderer_img: "renderer-img.html",
 
     default_options:  "options-default.html",
 
@@ -75,23 +88,28 @@ var fixtures = {
 describe("Renderers:", function () {
     describe("SVG", function () {
         it('should render the proper inline SVG', function (done) {
-            testImplementation(fixtures.svg_inline, { renderer: "SVG" }, done);
+            testImplementation(fixtures.renderer_svg_inline, { renderer: "SVG" }, done);
         })
         it('should render the proper display SVG', function (done) {
-            testImplementation(fixtures.svg_display, { renderer: "SVG" }, done);
+            testImplementation(fixtures.renderer_svg_display, { renderer: "SVG" }, done);
         })
     })
     describe("MathML (NativeMML)", function () {
         it('should render the proper inline MML', function (done) {
-            testImplementation(fixtures.mathml_inline, { renderer: "NativeMML" }, done);
+            testImplementation(fixtures.renderer_mathml_inline, { renderer: "NativeMML" }, done);
         })
         it('should render the proper display MML', function (done) {
-            testImplementation(fixtures.mathml_display, { renderer: "NativeMML" }, done);
+            testImplementation(fixtures.renderer_mathml_display, { renderer: "NativeMML" }, done);
+        })
+    })
+    describe.skip("Image (IMG)", function () {
+        it('should render as an SVG', function (done) {
+            testImplementation(fixtures.renderer_img, { renderer: "IMG" }, done);
         })
     })
     describe("None", function () {
         it('should do nothing', function (done) {
-            testImplementation(fixtures.no_anything, { renderer: "None" }, done);
+            testImplementation(fixtures.renderer_none, { renderer: "None" }, done);
         })
     })
 })
@@ -202,13 +220,5 @@ describe("Graceful Failures for Input File:", function () {
             testImplementation(fixtures.no_anything, { renderer: "SVG" }, done);
         })
     })
-})
-
-after(function () {
-    try {
-        flatDelete("temp/");
-    } catch(e) {
-        console.log(e);
-    }
 })
 

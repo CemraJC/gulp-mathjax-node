@@ -95,8 +95,7 @@ Accepted Values:
 
 * `SVG` - Render equations as an SVG image (as demonstrated above)
 * `NativeMML` - Render equations into Math Markup Language
-<!-- * `IMG` -->
-<!-- * `None` -->
+* `None` - Not sure why you'd want this, but it will completely disable equation rendering and just pass the file through.
 
 #### equationNumbers
 
@@ -107,7 +106,7 @@ Accepted Values:
 
 * `AMS` - Any display equations written inside a `\begin{equation} ... \end{equation}` block will be numbered.
 * `all` - Every display equation will be numbered, starting from 1.
-* `none`
+* `none` - Doesn't number any equations
 
 #### singleDollars
 

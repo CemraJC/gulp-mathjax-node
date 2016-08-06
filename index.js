@@ -122,7 +122,7 @@ function renderHTML(_options) {
     var options = parseOptions(_options);
 
     var stream = through.obj(function(file, enc, cb){
-        if (file.isBuffer()) {
+        if (file.isBuffer() && options.renderer.toLowerCase() !== "none") {
             var doc = splitHeadBodyTail(file.contents.toString());
             if (checkForTex(doc.body)) {
                 options.html = doc.body;
