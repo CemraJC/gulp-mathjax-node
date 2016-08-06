@@ -12,10 +12,11 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp": "^3.9.1",
     "mocha": "^3.0.0"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha -c -R spec ./test/main.js"
+    "test": "bash -c 'cd ./test/; ../node_modules/.bin/mocha -c -R spec ./main.js'"
   },
   "keywords": [
     "gulpfriendly",
