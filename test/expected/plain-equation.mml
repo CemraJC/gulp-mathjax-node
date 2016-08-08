@@ -1,0 +1,18 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>h</mi>
+  <mo stretchy="false">(</mo>
+  <mi>&#x03C4;<!-- τ --></mi>
+  <msubsup>
+    <mi>r</mi>
+    <mn>1</mn>
+    <mn>2</mn>
+  </msubsup>
+  <mo>&#x2212;<!-- − --></mo>
+  <mi>&#x03C4;<!-- τ --></mi>
+  <msubsup>
+    <mi>r</mi>
+    <mn>2</mn>
+    <mn>2</mn>
+  </msubsup>
+  <mo stretchy="false">)</mo>
+</math>

@@ -44,7 +44,7 @@ before(function () {
     try {
         flatDelete("temp/");
     } catch(e) {
-        console.log(e);
+        console.log(e.message);
     }
 })
 
@@ -60,7 +60,8 @@ var fixtures = {
     renderer_img: "renderer-img.html",
 
     default_options:  "options-default.html",
-    plaintext:  "equation.svg",
+    plain_svg:  "plain-equation.svg",
+    plain_mml:  "plain-equation.mml",
 
     no_body:  {
         svg: "no-body-svg.html",
@@ -110,7 +111,7 @@ describe("Renderers:", function () {
     })
     describe("None", function () {
         it('should do nothing', function (done) {
-            testImplementation(fixtures.renderer_none, { renderer: "None" }, done);
+            testImplementation(fixtures.renderer_none, { renderer: "none" }, done);
         })
     })
 })
@@ -230,8 +231,11 @@ describe("Graceful Failures for Input File:", function () {
     })
 })
 
-describe("Render a plaintext file", function () {
-    it.only("should properly render to SVG format", function (done) {
-        testImplementation(fixtures.plaintext, {}, done);
+describe("Rendering plaintext", function () {
+    it("should properly render to SVG format", function (done) {
+        testImplementation(fixtures.plain_svg, {}, done);
+    })
+    it("should properly render to MathML format", function (done) {
+        testImplementation(fixtures.plain_mml, { mml: true }, done);
     })
 })

@@ -1,15 +1,26 @@
-var math = require('mathjax-node/lib/mj-page.js'),
+"use strict";
+
+var math = {
+        page: require('mathjax-node/lib/mj-page.js'),
+        single: require('mathjax-node/lib/mj-single.js')
+    },
     fs = require('fs'),
     _ = require('lodash'),
     gutil = require('gulp-util'),
     through = require('through2'),
     PluginError = gutil.PluginError;
 
-math.config({
+
+// The math algorithm to use will be determined based on if the file looks like html.
+math.page.config({
     displayErrors: false
 });
-math.start();
+math.page.start();
+math.single.start();
+
 const PLUGIN_NAME = "gulp-mathjax-node";
+
+module.exports = renderStream;
 
 
 /*
@@ -41,7 +52,7 @@ function indexAndLength(string, regex) {
 
     var match = string.match(regex);
     if (match === null || match[0] === undefined) {
-        throw(new PluginError(PLUGIN_NAME, "HTML Error - unable to find" + regex));
+        throw(new PluginError(PLUGIN_NAME, "Unable to find " + regex));
         return false;
     } else {
         match = match[0];
@@ -70,16 +81,24 @@ function parseOptions(_options) {
 
     var error_html = "<h1 style='width: 100%;text-align:center;font-family:Arial,sans-serif;'>If you're seeing this, a major error has occurred. Please file an issue at the <a style='color:#67B1E5;' href='https://github.com/cemrajc/gulp-mathjax-node/issues'><b>gulp-mathjax-node</b></a> Github page!</h1>";
 
+
+    // This merges the options for mj-page and mj-single into one.
     var defaults = {
         html: error_html,               // the HTML snippet to process, which will be overwritten in this
                                         // object by the contents of the file itself,
                                         // so it has an error message in a string.
+        math: "Problem!",               // the math to typeset - this will be replaced, so it has a warning message.
+
+        format: "TeX",                  // the input format (TeX, inline-TeX, AsciiMath, or MathML)
+        mml: false,                     // return mml output?
+        svg: false,                      // return svg output?
+        img: false,                     // return img tag for remote image?
+        png: false,                     // return png image (as data: URL)?
 
         linebreaks: false,              // do linebreaking? [Supported]
         equationNumbers: "none",        // or "AMS" or "all" [Supported]
         singleDollars: true,            // allow single-dollar delimiter for inline TeX? [Supported]
 
-        svg: true,
         renderer: "SVG",                // the output format [Supported]
                                         //    ("SVG", "NativeMML", "IMG", or "None")
 
@@ -96,11 +115,28 @@ function parseOptions(_options) {
         speakText: false,               // add spoken annotations to svg output? [Not Supported]
         speakRuleset: "mathspeak",      // set speech ruleset (default (chromevox rules), mathspeak) [Not Supported]
         speakStyle: "default",          // set speech style (mathspeak:  default, brief, sbrief) [Not Supported]
-        timeout: 60 * 1000,             // 60 second timeout before restarting MathJax [Not Supported]
+        timeout: 1 * 1000,             // 60 second timeout before restarting MathJax [Not Supported]
     };
 
     var options = _.pick(_.defaults(_options, defaults), Object.keys(defaults));
+
+    if (!options.css && !options.mml && !options.svg && !options.img && !options.png) {
+        options.svg = true;
+    }
+
     return options;
+}
+
+function optionsForPage(options) {
+    var accepted_keys = ['html', 'linebreaks', 'equationNumbers', 'singleDollars', 'renderer', 'addPreview',
+    'removeJax', 'ex', 'width', 'useFontCache', 'useGlobalCache', 'xmlns', 'inputs', 'dpi', 'speakText', 'speakRuleset', 'speakStyle', 'timeout'];
+    return _.pick(options, accepted_keys);
+}
+
+function optionsForSingle(options) {
+    // Must exclude "useGlobalCache", otherwise mathjax-node says something about glyphs
+    var accepted_keys = ['math', 'format', 'mml', 'svg', 'img', 'png', 'linebreaks', 'equationNumbers', 'ex', 'width', 'useFontCache', 'xmlns', 'dpi', 'speakText', 'speakRuleset', 'speakStyle', 'timeout'];
+    return _.pick(options, accepted_keys);
 }
 
 function checkForTex(html) {
@@ -113,39 +149,80 @@ function checkForTex(html) {
     return false;
 }
 
-function renderHTML(_options) {
+function extractMath(string) {
+    var first_dollar = indexAndLength(string, new RegExp("\\${1,2}"));
+    string = string.substr(first_dollar.index + first_dollar.length);
 
+    var second_dollar = indexAndLength(string, new RegExp("\\${1,2}"));
+    string = string.replace(/\${1,2}.*/, '');
+    string = string.replace(/\r?\n/, '');
+    string = string.trim();
+    return string;
+}
+
+function renderStream(_options) {
     var options = parseOptions(_options);
 
     var stream = through.obj(function(file, enc, cb){
-        if (file.isBuffer() && options.renderer.toLowerCase() !== "none") {
-            var doc = splitHeadBodyTail(file.contents.toString());
-            if (checkForTex(doc.body)) {
-                options.html = doc.body;
-                // math.start();  <-- Causes undefined behaviour
-
-                var stream_parent = this;
-                math.typeset(options, function (result) {
-                    if (!result.errors) {
-                        file.contents = new Buffer(doc.head + result.html + doc.tail);
-                    } else {
-                        stream_parent.emit(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
-                    }
-                    stream_parent.push(file);
-                    cb();
-                });
+        if (options.renderer == 'none' || options.format == 'none' || !file.isBuffer()) {
+            this.push(file);
+            cb();
+        } else if (checkForTex(file.contents.toString())) {
+            if (file.contents.toString().match(/<[^<]+>/) !== null) {
+                renderPage.call(this, file, optionsForPage(options), cb);
             } else {
-                this.push(file);
-                cb();
+                renderSingle.call(this, file, optionsForSingle(options), cb);
             }
         } else {
             this.push(file);
             cb();
         }
     });
-
     return stream;
 }
 
+function renderPage(file, options, cb) {
+    var doc = splitHeadBodyTail(file.contents.toString());
+    if (checkForTex(doc.body)) {
+        options.html = doc.body;
 
-module.exports = renderHTML;
+        var stream_parent = this;
+        math.page.typeset(options, function (result) {
+            if (!result.errors) {
+                file.contents = new Buffer(doc.head + result.html + doc.tail);
+            } else {
+                stream_parent.emit(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
+            }
+            stream_parent.push(file);
+            cb();
+        });
+    } else {
+        this.push(file);
+        cb();
+    }
+}
+
+function renderSingle(file, options, cb) {
+    var method;
+    options.math = extractMath(file.contents.toString());
+
+    var methods = _.pick(options, ['mml', 'svg', 'img', 'png']);
+    for (var i in methods) {
+        if (methods[i]) {
+            method = i;
+            break;
+        }
+    }
+
+    var stream_parent = this;
+    math.single.typeset(options, function (result) {
+        if (!result.errors) {
+            file.contents = new Buffer(result[method]);
+        } else {
+            stream_parent.emit(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
+        }
+        stream_parent.push(file);
+        cb();
+    });
+}
+
