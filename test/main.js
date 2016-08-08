@@ -115,12 +115,19 @@ describe("Renderers:", function () {
 })
 
 describe("Testing Options:", function () {
+    describe("No options passed", function () {
+        it("should use the defaults", function (done) {
+            testImplementation(fixtures.default_options, undefined, done);
+        })
+    })
+
     describe.skip("linebreaks", function () {
         // Does not insert linebreaks by default
         it("should insert linebreaks", function (done) {
             testImplementation(fixtures.linebreaks, { renderer: "SVG", linebreaks: true }, done);
         })
     })
+
 
     // It does no numbering by default
     describe("equationNumbers", function () {

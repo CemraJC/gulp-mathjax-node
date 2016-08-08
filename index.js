@@ -60,6 +60,7 @@ function indexAndLength(string, regex) {
 }
 
 function parseOptions(_options) {
+    _options = _options || {}; // If it's undefined, allow it through (use defaults)
 
     if (typeof(_options) !== "object") {
         throw new PluginError(PLUGIN_NAME, "Options must be of type 'object', not \'" + typeof(_options) + "\'");
