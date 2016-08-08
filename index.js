@@ -12,13 +12,6 @@ const PLUGIN_NAME = "gulp-mathjax-node";
 
 
 /*
-
-TODO:
-CHECK IF THEY ACTUALLY HAVE TEX!!!
-
- */
-
-/*
     Specialised funciton to split HTML into it's head, body and tail components
  */
 function splitHeadBodyTail(html) {
@@ -109,7 +102,7 @@ function parseOptions(_options) {
 }
 
 function checkForTex(html) {
-    var searches = [/\${1,2}[^$]*\${1,2}/, 'script type="math/tex"'];
+    var searches = [new RegExp("\\${1,2}[^$]*\\${1,2}"), 'script type="math/tex'];
     for (var i in searches) {
         if (html.match(searches[i]) !== null) {
             return true;
@@ -127,15 +120,16 @@ function renderHTML(_options) {
             var doc = splitHeadBodyTail(file.contents.toString());
             if (checkForTex(doc.body)) {
                 options.html = doc.body;
-                math.start();
+                // math.start();  <-- Causes undefined behaviour
 
-                math.typeset(options, (result) => {
+                var stream_parent = this;
+                math.typeset(options, function (result) {
                     if (!result.errors) {
                         file.contents = new Buffer(doc.head + result.html + doc.tail);
                     } else {
-                        this.emit(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
+                        stream_parent.emit(new PluginError(PLUGIN_NAME, result.errors.toString() + " in file \"" + file.path + "\""));
                     }
-                    this.push(file);
+                    stream_parent.push(file);
                     cb();
                 });
             } else {
