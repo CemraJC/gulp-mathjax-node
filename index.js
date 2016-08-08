@@ -8,6 +8,7 @@ var math = require('mathjax-node/lib/mj-page.js'),
 math.config({
     displayErrors: false
 });
+math.start();
 const PLUGIN_NAME = "gulp-mathjax-node";
 
 
@@ -78,6 +79,7 @@ function parseOptions(_options) {
         equationNumbers: "none",        // or "AMS" or "all" [Supported]
         singleDollars: true,            // allow single-dollar delimiter for inline TeX? [Supported]
 
+        svg: true,
         renderer: "SVG",                // the output format [Supported]
                                         //    ("SVG", "NativeMML", "IMG", or "None")
 

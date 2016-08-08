@@ -60,6 +60,7 @@ var fixtures = {
     renderer_img: "renderer-img.html",
 
     default_options:  "options-default.html",
+    plaintext:  "equation.svg",
 
     no_body:  {
         svg: "no-body-svg.html",
@@ -229,3 +230,8 @@ describe("Graceful Failures for Input File:", function () {
     })
 })
 
+describe("Render a plaintext file", function () {
+    it.only("should properly render to SVG format", function (done) {
+        testImplementation(fixtures.plaintext, {}, done);
+    })
+})
