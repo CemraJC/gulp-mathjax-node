@@ -1,6 +1,6 @@
 # gulp-mathjax-node
 
-gulp-mathjax-node is a [gulp](https://github.com/wearefractal/gulp) plugin to statically render TeX expressions into markup. More specifically, it is a wrapper around the [mathjax-node]() module.
+gulp-mathjax-node is a [gulp](https://github.com/wearefractal/gulp) plugin to statically render TeX expressions into markup or images. More specifically, this plugin is a wrapper around the [mathjax-node]() module.
 
 For example, if you had an HTML file with TeX in it like this:
 
@@ -11,7 +11,7 @@ For example, if you had an HTML file with TeX in it like this:
   $$
     \int^\pi_0 sin\left( \frac{x^2}{2} \right) dx
   $$
-  <p>Try a gool 'ol inline expression: $x^2+y^2=z^2$</p>
+  <p>Try a good 'ol inline expression: $x^2+y^2=z^2$</p>
 </body>
 ```
 
@@ -26,7 +26,7 @@ G'day mate! Here's a math expression:
 
 ![Display Equation SVG Demo](images/demo_display.svg)
 
-Try a gool 'ol inline expression: ![Inline Equation SVG Demo](images/demo_inline.svg)
+Try a good 'ol inline expression: ![Inline Equation SVG Demo](images/demo_inline.svg)
 
 ----
 
@@ -40,7 +40,9 @@ Note however, that the SVG definition is actually inline with the HTML (and the 
 
 ## Usage
 
-gulp-mathjax-node can be simply dropped in to an HTML processing pipeline - although any file format could be used.
+#### HTML Files
+
+gulp-mathjax-node can be simply dropped in to an HTML processing pipeline - although other file formats could be used.
 
 ```javascript
 var math     = require("gulp-mathjax-node"),
@@ -84,25 +86,30 @@ gulp.src("**/*.html")
   .pipe(gulp.dest("dest/"));
 ```
 
+#### TeX Files
+
 As mentioned before, HTML isn't the only filetype supported. Any plaintext file with TeX in it can be converted. Make sure that you use double-dollar signs.
 
+**Input:**
+
 ```latex
-% This file is "equation.txt"
+% This file is "equation.tex". Anything between the $$'s gets rendered, the rest is completely ignored.
 $$
   h(\pi\timesr_1^2 - \pi\timesr_2^2)
 $$
 ```
+
+**Processing Logic:**
 
 ```javascript
 var math   = require("gulp-mathjax-node"),
     rename = require("gulp-rename"),
     gulp   = require("gulp");
 
-// Render the plaintext equation into an SVG.
-// Also disable '$ ... $' expressions, just in case it's forgotten in the file.
-gulp.src("equation.txt")
+// Render a plaintext equation into an SVG.
+gulp.src("equation.tex")
   .pipe(math({
-    singleDollars: false
+    svg: true
   }))
   .pipe(rename({
     extname: ".svg"
@@ -110,10 +117,17 @@ gulp.src("equation.txt")
   .pipe(gulp.dest("dest/"));
 ```
 
+**Output:**
 
-## Options
+![Plain TeX to SVG](./images/demo_plain.svg)
 
-Options must be passed in as a json object, similar to the examples above.
+# Options
+
+Options must be passed in as a json object, similar to the examples above. Depending on what kind of files you're handling, the options will vary.
+
+## HTML Files
+
+These options only apply when the files you're using *look* like HTML. This means that any file with something like a tag in it (like this: `<an non standard tag>`) will be rendered using this pipeline with the following options.
 
 #### renderer
 
@@ -124,7 +138,7 @@ Accepted Values:
 
 * `SVG` - Render equations as an SVG image (as demonstrated above)
 * `NativeMML` - Render equations into Math Markup Language
-* `None` - Not sure why you'd want this, but it will completely disable equation rendering and just pass the file through.
+* `None` - Not sure why you'd want this, but it will completely disable equation rendering and just pass the file through
 
 #### equationNumbers
 
@@ -158,6 +172,41 @@ Default: `false`
 
 If `true`, add a MathJaX preview clause and keep the TeX. If you still want to use a dynamic MathJaX script, this is a great way to boost the perceived performance.
 
+
+
+## TeX Files
+
+These options apply to files that don't look like HTML. If you want the file to be rendered, it is required that the target expression is enclosed in a pair of dollar signs, as shown in the example before. Everything else in the file is ignored, while the enclosed expression is rendered by mathjax-node.
+
+
+#### format
+
+Type: String <br>
+Default: `TeX`
+
+* `TeX` - The input is written in TeX
+* `inline-TeX` - The input is TeX, but is meant to be inline
+* `MathML` - The input it MathML
+* `AsciiMath` - The input is in the AsciiMath format
+
+#### svg
+
+Type: Boolean <br>
+Default: `true`
+
+If `true`, render the math expression to an svg.
+
+
+#### mml
+
+Type: Boolean <br>
+Default: `false`
+
+If `true`, render the math expression to mml.
+
+##### Renderer Warning
+
+If you set more than one of `svg` or `mml` to true, then the behavior is undefined.
 
 <!-- #### linebreaks
 

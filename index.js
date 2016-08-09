@@ -91,7 +91,7 @@ function parseOptions(_options) {
 
         format: "TeX",                  // the input format (TeX, inline-TeX, AsciiMath, or MathML)
         mml: false,                     // return mml output?
-        svg: false,                      // return svg output?
+        svg: false,                     // return svg output?
         img: false,                     // return img tag for remote image?
         png: false,                     // return png image (as data: URL)?
 
