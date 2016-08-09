@@ -1,6 +1,6 @@
 # gulp-mathjax-node
 
-gulp-mathjax-node is a [gulp](https://github.com/wearefractal/gulp) plugin to statically render TeX expressions into markup or images. More specifically, this plugin is a wrapper around the [mathjax-node]() module.
+gulp-mathjax-node is a [gulp](https://github.com/gulpjs/gulp) plugin to statically render TeX expressions into markup or images. More specifically, this plugin is a wrapper around the [mathjax-node](https://github.com/mathjax/MathJax-node) module.
 
 For example, if you had an HTML file with TeX in it like this:
 
@@ -71,7 +71,7 @@ gulp.src("_site/**/*.html")
   .pipe(gulp.dest("_site/"));
 ```
 
-gulp-mathjax-node also accepts custom options, which are passed directly into [mathjax-node]().
+gulp-mathjax-node also accepts custom options, which are passed directly into [mathjax-node](https://github.com/mathjax/MathJax-node).
 
 ```javascript
 var math = require("gulp-mathjax-node"),
@@ -219,9 +219,9 @@ If `true`, we don't actually know what happens. -->
 
 ### Note about option support
 
-There are other options you can pass in, but you will need to refer to the [mathjax-node docs]() to find out what they are. Be warned, if they aren't mentioned above, they may not work as you intend.
+There are other options you can pass in, but you will need to refer to the [mathjax-node docs](https://github.com/mathjax/MathJax-node/README.md) to find out what they are. Be warned, if they aren't mentioned above, they may not work as you intend.
 
-gulp-mathjax-node only supports a few of the options that the underlying [mathjax-node]() module can actually handle. Mostly, this is of little consequence (let us know if we've made an oversight), but the most notable exclusion is PNG-rendering support. This PNG renderer is not supported, because mathjax-node does not actually include the capability for PNG rendering - it requires a separate manually-installed library. In my opinion, the SVG renderer is better anyway, because resulting equations look crisp at any dpi. The basic SVGs that mathjax-node produces are also [highly supported](caniuse).
+gulp-mathjax-node only supports a few of the options that the underlying [mathjax-node](https://github.com/mathjax/MathJax-node) module can actually handle. Mostly, this is of little consequence (let us know if we've made an oversight), but the most notable exclusion is PNG-rendering support. This PNG renderer is not supported, because mathjax-node does not actually include the capability for PNG rendering - it requires a separate manually-installed library. In my opinion, the SVG renderer is better anyway, because resulting equations look crisp at any dpi. The basic SVGs that mathjax-node produces are also [highly supported](http://caniuse.com/svg).
 
 ## Troubleshooting
 
