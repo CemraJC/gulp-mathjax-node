@@ -1,6 +1,8 @@
 # gulp-mathjax-node
 
-![build status](https://travis-ci.org/CemraJC/gulp-mathjax-node.svg)
+![build status](https://travis-ci.org/CemraJC/gulp-mathjax-node.svg) [![devDependency Status](https://david-dm.org/cemrajc/gulp-mathjax-node/dev-status.svg)](https://david-dm.org/cemrajc/gulp-mathjax-node#info=devDependencies) [![Dependency Status](https://david-dm.org/cemrajc/gulp-mathjax-node.svg)](https://david-dm.org/cemrajc/gulp-mathjax-node#info=dependencies)
+
+[![NPM](https://nodei.co/npm/gulp-mathjax-node.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gulp-mathjax-node/)
 
 gulp-mathjax-node is a [gulp](https://github.com/gulpjs/gulp) plugin to statically render TeX expressions into markup or images. More specifically, this plugin is a wrapper around the [mathjax-node](https://github.com/mathjax/MathJax-node) module.
 
@@ -26,16 +28,13 @@ This is an HTML file!
 
 G'day mate! Here's a math expression:
 
-![Display Equation SVG Demo](images/demo_display.svg)
+![Display Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_display.svg)
 
-Try a good 'ol inline expression: ![Inline Equation SVG Demo](images/demo_inline.svg)
+Try a good 'ol inline expression: ![Inline Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_inline.svg)
 
 ----
 
 Note however, that the SVG definition is actually inline with the HTML (and the inline equation wouldn't be cut off).
-
-<!-- [![NPM](https://nodei.co/npm/gulp-mathjax-node.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gulp-mathjax-node/)
-[![devDependency Status](https://david-dm.org/cemrajc/gulp-mathjax-node/dev-status.svg)](https://david-dm.org/cemrajc/gulp-mathjax-node#info=devDependencies) -->
 
 ## Usage
 
@@ -118,7 +117,7 @@ gulp.src("equation.tex")
 
 **Output:**
 
-![Plain TeX to SVG](./images/demo_plain.svg)
+![Plain TeX to SVG](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_plain.svg)
 
 # Options
 
