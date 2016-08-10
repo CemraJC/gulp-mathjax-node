@@ -4,10 +4,16 @@ var math   = require("../index.js"),
     expect = require("chai").expect;
 
 
+// Convert CRLF to LF
+// Using this because it's easier than unix2dos
+function dos2unix(text) {
+    return text.replace(/\r\n/g, "\n");
+}
+
 function checkFilesEqual(path1, path2) {
     try {
-        var file1 = fs.readFileSync(path1, {encoding: "utf-8"});
-        var file2 = fs.readFileSync(path2, {encoding: "utf-8"});
+        var file1 = dos2unix(fs.readFileSync(path1, {encoding: "utf-8"}));
+        var file2 = dos2unix(fs.readFileSync(path2, {encoding: "utf-8"}));
         return (file1 === file2);
     } catch(e) {
         console.log("> Could not compare files: ", e.code, e.path);

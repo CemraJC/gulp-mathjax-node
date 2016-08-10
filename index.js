@@ -18,10 +18,9 @@ math.page.config({
 math.page.start();
 math.single.start();
 
-const PLUGIN_NAME = "gulp-mathjax-node";
+var PLUGIN_NAME = "gulp-mathjax-node";
 
 module.exports = renderStream;
-
 
 /*
     Specialised funciton to split HTML into it's head, body and tail components
