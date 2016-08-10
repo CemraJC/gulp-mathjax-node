@@ -1,5 +1,7 @@
 # gulp-mathjax-node
 
+![build status](https://travis-ci.org/CemraJC/gulp-mathjax-node.svg)
+
 gulp-mathjax-node is a [gulp](https://github.com/gulpjs/gulp) plugin to statically render TeX expressions into markup or images. More specifically, this plugin is a wrapper around the [mathjax-node](https://github.com/mathjax/MathJax-node) module.
 
 For example, if you had an HTML file with TeX in it like this:
@@ -32,10 +34,7 @@ Try a good 'ol inline expression: ![Inline Equation SVG Demo](images/demo_inline
 
 Note however, that the SVG definition is actually inline with the HTML (and the inline equation wouldn't be cut off).
 
-
 <!-- [![NPM](https://nodei.co/npm/gulp-mathjax-node.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gulp-mathjax-node/)
-
-[![build status](https://secure.travis-ci.org/cemrajc/gulp-mathjax-node.svg)](http://travis-ci.org/cemrajc/gulp-mathjax-node)
 [![devDependency Status](https://david-dm.org/cemrajc/gulp-mathjax-node/dev-status.svg)](https://david-dm.org/cemrajc/gulp-mathjax-node#info=devDependencies) -->
 
 ## Usage
