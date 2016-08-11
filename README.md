@@ -211,7 +211,10 @@ If you set more than one of `svg` or `mml` to true, then the behavior is undefin
 Type: Boolean <br>
 Default: `false`
 
-If `true`, we don't actually know what happens. -->
+If `true`, we don't actually know what happens.
+Apparently this inserts linebreaks in 'long expressions', but it doesn't do that for TeX.  I don't have the time to figure it out, and I think it only applies to MathML anyway so I'm leaving it out.
+
+ -->
 
 
 

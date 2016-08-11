@@ -129,13 +129,6 @@ describe("Testing Options:", function () {
         })
     })
 
-    describe.skip("linebreaks", function () {
-        // Does not insert linebreaks by default
-        it("should insert linebreaks", function (done) {
-            testImplementation(fixtures.linebreaks, { renderer: "SVG", linebreaks: true }, done);
-        })
-    })
-
 
     // It does no numbering by default
     describe.skip("equationNumbers (waiting on `mathjax-node` bugfix)", function () {
