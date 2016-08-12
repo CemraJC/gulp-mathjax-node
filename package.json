@@ -29,7 +29,7 @@
     "gulp"
   ],
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 4"
   },
   "author": "Jason Cemra <cemrajc+gulpmathjaxnode@gmail.com> (http://cemrajc.cf)",
   "license": "MIT"
