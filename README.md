@@ -28,9 +28,9 @@ This is an HTML file!
 
 G'day mate! Here's a math expression:
 
-![Display Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_display.svg)
+![Display Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_display.png)
 
-Try a good 'ol inline expression: ![Inline Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_inline.svg)
+Try a good 'ol inline expression: ![Inline Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_inline.png)
 
 ----
 
@@ -117,7 +117,7 @@ gulp.src("equation.tex")
 
 **Output:**
 
-![Plain TeX to SVG](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_plain.svg)
+![Plain TeX to SVG](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_plain.png)
 
 # Options
 
