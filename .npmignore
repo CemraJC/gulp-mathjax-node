@@ -1,5 +1,5 @@
 __dev/
-test/temp/
+test/
 node_modules/
 *.ffs_*
 *.sh
