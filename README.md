@@ -20,21 +20,9 @@ For example, if you had an HTML file with TeX in it like this:
 ```
 
 
-The output (in a browser) would *look* like this:
+The output (in a browser) would look like this:
 
-----
-
-This is an HTML file!
-
-G'day mate! Here's a math expression:
-
-![Display Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_display.png)
-
-Try a good 'ol inline expression: ![Inline Equation SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_inline.png)
-
-----
-
-Note however, that the SVG definition is actually inline with the HTML (and the inline equation wouldn't be cut off).
+![MathJax SVG Demo](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo-page.jpg)
 
 ## Usage
 
@@ -117,7 +105,7 @@ gulp.src("equation.tex")
 
 **Output:**
 
-![Plain TeX to SVG](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo_plain.png)
+![Plain TeX to SVG](https://raw.githubusercontent.com/CemraJC/gulp-mathjax-node/master/images/demo-plain.png)
 
 # Options
 
