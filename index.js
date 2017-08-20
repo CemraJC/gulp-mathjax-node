@@ -127,7 +127,7 @@ function parseOptions(_options) {
 }
 
 function optionsForPage(options) {
-    var accepted_keys = ['html', 'linebreaks', 'equationNumbers', 'singleDollars', 'renderer', 'addPreview',
+    var accepted_keys = ['html', 'linebreaks', 'equationNumbers', 'singleDollars', 'renderer', 'addPreview', 'extensions',
     'removeJax', 'ex', 'width', 'useFontCache', 'useGlobalCache', 'xmlns', 'inputs', 'dpi', 'speakText', 'speakRuleset', 'speakStyle', 'timeout'];
     return _.pick(options, accepted_keys);
 }
